@@ -1,20 +1,18 @@
 {
-  "name": "Listen1",
-  "version": "2.7.2",
+  "name": "listen1",
+  "version": "2.27.0",
   "description": "One for all free music in China",
   "main": "app/main.js",
   "scripts": {
-    "postinstall": "install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "start": "electron ./app --enable-logging",
     "dev": "NODE_ENV='development' npm run start",
     "dist:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false DEBUG=electron-builder electron-builder --mac",
     "dist": "electron-builder .",
-    "dist:linux": "./node_modules/.bin/electron-builder --linux --ia32 --x64",
-    "dist:linux32": "./node_modules/.bin/electron-builder --linux --ia32",
-    "dist:linux64": "./node_modules/.bin/electron-builder --linux --x64",
-    "dist:win": "./node_modules/.bin/electron-builder --win --ia32 --x64",
-    "dist:win32": "./node_modules/.bin/electron-builder --win --ia32",
-    "dist:win64": "./node_modules/.bin/electron-builder --win --x64"
+    "dist:linux": "electron-builder --linux --ia32 --x64",
+    "dist:linux32": "electron-builder --linux --ia32",
+    "dist:linux64": "electron-builder --linux --x64",
+    "dist:win": "electron-builder --win"
   },
   "repository": {
     "type": "git",
@@ -36,10 +34,7 @@
     "asar": true,
     "artifactName": "${name}_${version}_${os}_${arch}.${ext}",
     "dmg": {
-      "title": "Listen 1",
       "icon": "build/disk.icns",
-      "background": "build/background.png",
-      "iconSize": 80,
       "contents": [
         {
           "x": 192,
@@ -53,12 +48,26 @@
         }
       ]
     },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.music"
+    },
     "linux": {
       "target": [
         "tar.gz",
         "appImage",
         "deb"
-      ]
+      ],
+      "category": "Audio"
     },
     "nsis": {
       "runAfterFinish": false,
@@ -71,15 +80,30 @@
       "createDesktopShortcut": true
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        },
+        {
+          "target": "7z",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        }
+      ],
       "icon": "build/icon.ico"
     }
   },
   "devDependencies": {
-    "electron": "^8.2.3",
-    "electron-builder": "^22.5.1"
-  },
-  "dependencies": {
-    "electron-debug": "^1.5.0"
+    "electron": "^13.6.9",
+    "electron-builder": "^23.0.3",
+    "prettier": "^2.6.2"
   }
 }
